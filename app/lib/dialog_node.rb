@@ -1,0 +1,91 @@
+class DialogNode
+
+  # Define default values
+  INPUT_CONTEXT   = []
+  OUTPUT_CONTEXT  = []
+  INTENTS         = []
+  PRIORITY        = 0
+
+
+  ALL_NODES = [
+      :start, :end, :welcome, :ask_activity_today, :activity_today_yes, :activity_today_no
+    ].map{ |t| [t, "DialogNode/#{t}".camelize.constantize] }.to_h
+
+
+  class << self
+    def get_node(name)
+      ALL_NODES[name]
+    end
+
+    def all_nodes
+      ALL_NODES.values
+    end
+
+    def applicable_nodes(context)
+      ALL_NODES.select{ |_k, n| n.applicable?(context) }.collect(&:first)
+    end
+
+    def applicable?(context)
+      return false unless context_match?(context)
+      return false unless intents_match?(context)
+      true
+    end
+
+    def context_match?(context)
+      self::INPUT_CONTEXT.empty? || (self::INPUT_CONTEXT && context.current_node.output_context)
+    end
+
+    def intents_match?(context)
+      self::INTENTS.empty? || (self::INTENTS & context.last_user_intents).any?
+    end
+
+    def order_by_priority(nodes, context)
+      nodes.sort_by { |n| n.priority }.reverse!
+    end
+
+    def to_sym
+      self.to_s.underscore.split('/').last.to_sym.freeze
+    end
+  end
+
+  def initialize(context)
+    @context = context
+  end
+
+  def priority
+    return @priority if defined? @priority
+    @priority = self.class::PRIORITY
+    @priority += 10 if intents_match?
+    @priority += 10 if context_match?
+    Rails.logger.debug("Piority #{self.class}: #{@priority}")
+    @priority
+  end
+
+  def context_match?
+    self.class.context_match? @context
+  end
+
+  def intents_match?
+    self.class.intents_match? @context
+  end
+
+  def wait_for_user?
+    self.class::WAIT_FOR_USER
+  end
+
+  def input_context
+    self.class::INPUT_CONTEXT
+  end
+
+  def output_context
+    self.class::OUTPUT_CONTEXT
+  end
+
+  def intents
+    self.class::INTENTS
+  end
+
+  def to_sym
+    self.class.to_sym
+  end
+end

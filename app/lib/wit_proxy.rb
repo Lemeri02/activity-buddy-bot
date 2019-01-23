@@ -8,6 +8,7 @@ class WitProxy
     attr_reader :client
 
     def message(message)
+      Rails.logger.debug("Sending message to Wit.ai: #{message}")
       client.message(message)
     end
   end
