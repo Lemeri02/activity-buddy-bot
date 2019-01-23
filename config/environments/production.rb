@@ -83,4 +83,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Telegram Bot
+  #
+  # Bot's session
+  config.telegram_updates_controller.session_store = :file_store, Rails.root.join('tmp', 'session_store')
 end

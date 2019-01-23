@@ -1,12 +1,12 @@
 class User < ApplicationRecord
   validates_uniqueness_of :telegram_id
 
-  def next_bot_command=(command)
-    self.bot_command_data[:command] = command
-  end
 
-  def next_bot_command
-    self.bot_command_data[:command]
+  def self.create_from_message!(from)
+    user = User.find_or_initialize_by(telegram_id: from['id'])
+    user.firstname = from['first_name']
+    user.save!
+    user
   end
 
 end
