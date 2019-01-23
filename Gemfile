@@ -27,6 +27,9 @@ gem 'jbuilder', '~> 2.5'
 # Telegram integration
 gem 'telegram-bot'
 
+# Wit.ai
+gem 'wit'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
