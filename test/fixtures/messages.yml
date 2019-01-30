@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  conversation: 
+  text: MyText
+  answer: MyText
+  time: 2019-01-30 09:09:39
+  intents: 
+
+two:
+  conversation: 
+  text: MyText
+  answer: MyText
+  time: 2019-01-30 09:09:39
+  intents: 

@@ -36,7 +36,7 @@ class DialogNode
     end
 
     def intents_match?(context)
-      self::INTENTS.empty? || (self::INTENTS & context.last_user_intents).any?
+      self::INTENTS.empty? || (self::INTENTS & context.user_intents).any?
     end
 
     def order_by_priority(nodes, context)

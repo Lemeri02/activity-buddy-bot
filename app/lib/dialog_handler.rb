@@ -3,28 +3,36 @@ class DialogHandler
   def initialize(user)
     @user = user
     @context = DialogContext.new(@user)
-    @context.current_node = DialogNode.get_node(:start).new(@context)
+    @context.reset!
   end
 
   def handle_message(message)
-    # @messages << { time: DateTime.now, text: message}
+    # Restart conversation if timed out
+    @context.reset! if @context.timed_out?
 
     # Send to Wit.ai
-    resp = WitProxy.message(message['text'])
-    @context.last_message = resp
-    Rails.logger.debug("Received from Wit.ai: #{resp}")
-    @context.last_user_intents = extract_intents(resp)
-    Rails.logger.debug("Extracted intents: #{@context.user_intents}")
+    resp = WitResponse.new WitProxy.message(message['text'])
+    @context.last_message = message
+    Rails.logger.debug("Message: #{message}")
+    @context.wit_response = resp
+    Rails.logger.debug("Extracted intents: #{resp}")
 
+    # Create message and link to conversations
+    @context.message = @context.conversation.add_message_from_wit_response(resp)
+
+    # Proceed to next dialog node
     next_node!
     answer = @context.current_node.message
 
+    # Proceed to next dialog node unless a user message is expected
     while(!@context.current_node.wait_for_user?) do
       next_node!
       answer << "\n" + @context.current_node.message
     end
 
+    # Reset buffered node and return answer
     @context.buffered_nodes = []
+    @context.message.update_attribute(:answer, answer)
     return answer
   end
 
@@ -45,18 +53,6 @@ class DialogHandler
 
   def applicable_nodes
     DialogNode.applicable_nodes(@context)
-  end
-
-  def extract_intents(wit_response)
-    intents = []
-    wit_response["entities"].each do |entity, values|
-      if 'intent' == entity
-        intents << values.select{ |v| v['confidence'] >= 0.8 }.collect{ |v| v['value'].to_sym }
-      elsif ['greetings'].include? entity
-        intents << :welcome if values.first['confidence'] >= 0.8
-      end
-    end
-    intents.flatten.uniq
   end
 
 end

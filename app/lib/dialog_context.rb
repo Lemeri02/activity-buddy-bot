@@ -1,21 +1,40 @@
 class DialogContext
 
-  attr_accessor :user, :user_intents, :new_day, :current_node, :last_message, :buffered_nodes, :last_user_intents
+  attr_accessor :user, :user_intents, :new_day, :current_node,
+                :last_message, :buffered_nodes, :wit_response
+
+  # ActiveRecord Model instances
+  attr_accessor :conversation, :message
 
   def initialize(user)
     @user = user
     @buffered_nodes = []
   end
 
-  def yes_no
-    last_message.dig('entities','yes_no')&.first
+  def reset!
+    @current_node = DialogNode.get_node(:start).new(self)
+    @conversation = Conversation.create(user: @user, start: DateTime.now)
   end
 
+  def timed_out?
+    @conversation.timed_out?
+  end
+
+  # Get all current intents above threshold
+  def user_intents
+    @wit_response.valid_intents
+  end
+
+
+  ######################################
+  ## Convenience methods              ##
+  ######################################
+
   def yes?
-    yes_no ? yes_no['value'] == 'yes' : nil
+    @wit_response.intent_with_value?(:yes_no, 'yes')
   end
 
   def no?
-    yes_no ? yes_no['value'] == 'no' : nil
+    @wit_response.intent_with_value?(:yes_no, 'no')
   end
 end

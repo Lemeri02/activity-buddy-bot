@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  start: 2019-01-30 08:03:33
+  messages: 
+  engagement: 
+
+two:
+  user: two
+  start: 2019-01-30 08:03:33
+  messages: 
+  engagement: 
