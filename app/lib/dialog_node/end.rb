@@ -1,7 +1,7 @@
 class DialogNode::End < DialogNode
 
-  INPUT_CONTEXT = []
-  OUTPUT_CONTEXT = []
+  INPUT_CONTEXT   = []
+  OUTPUT_CONTEXT  = []
 
   WAIT_FOR_USER = true
 

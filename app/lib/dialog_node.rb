@@ -31,11 +31,13 @@ class DialogNode
       true
     end
 
-    def context_match?(context)
+    def context_match?(context, allow_empty = true)
+      return false if !allow_empty && self::INPUT_CONTEXT.empty?
       self::INPUT_CONTEXT.empty? || (self::INPUT_CONTEXT && context.current_node.output_context)
     end
 
-    def intents_match?(context)
+    def intents_match?(context, allow_empty = true)
+      return false if !allow_empty && self::INTENTS.empty?
       self::INTENTS.empty? || (self::INTENTS & context.user_intents).any?
     end
 
@@ -55,18 +57,18 @@ class DialogNode
   def priority
     return @priority if defined? @priority
     @priority = self.class::PRIORITY
-    @priority += 10 if intents_match?
-    @priority += 10 if context_match?
+    @priority += 10 if intents_match?(false)
+    @priority += 10 if context_match?(false)
     Rails.logger.debug("Piority #{self.class}: #{@priority}")
     @priority
   end
 
-  def context_match?
-    self.class.context_match? @context
+  def context_match?(allow_empty = true)
+    self.class.context_match? @context, allow_empty
   end
 
-  def intents_match?
-    self.class.intents_match? @context
+  def intents_match?(allow_empty = true)
+    self.class.intents_match? @context, allow_empty
   end
 
   def wait_for_user?
