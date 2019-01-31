@@ -30,8 +30,12 @@ class DialogHandler
       answer << "\n" + @context.current_node.message
     end
 
+    # Analyze User Engagement, can be done in background task
+    @context.send_to_engagement_analysis
+
     # Reset buffered node and return answer
-    @context.buffered_nodes = []
+    @context.buffered_nodes   = []
+    @context.goal_achievement = 0
     @context.message.update_attribute(:answer, answer)
     return answer
   end

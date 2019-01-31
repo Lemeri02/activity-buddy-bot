@@ -15,18 +15,18 @@ class WitResponse
   end
 
   # Check for detected intent in WitResponse
-  def intent?(intent)
+  def intent?(intent, confidence_threshold = CONFIDENCE_THRESHOLD)
     intent = intent.to_sym if intent.is_a?(String)
     return false unless @intents.key? intent
-    return true if @intents[intent][:confidence] >= CONFIDENCE_THRESHOLD
+    return true if @intents[intent][:confidence] >= confidence_threshold
     false
   end
 
-  def intent_with_value?(intent, value)
+  def intent_with_value?(intent, value, confidence_threshold = CONFIDENCE_THRESHOLD)
     intent = intent.to_sym if intent.is_a?(String)
 
     # Check without value first
-    return false unless intent?(intent)
+    return false unless intent?(intent, confidence_threshold)
 
     # Check value second
     v = intent_value(intent)
