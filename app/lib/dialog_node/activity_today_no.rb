@@ -15,6 +15,6 @@ class DialogNode::ActivityTodayNo < DialogNode
 
   def message
     @context.goal_achievement = -1
-    "Too bad! But there is still time..."
+    message_for_strategy
   end
 end

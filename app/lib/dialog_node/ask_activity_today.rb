@@ -7,6 +7,6 @@ class DialogNode::AskActivityToday < DialogNode
 
 
   def message
-    "Did you do some activity today?"
+    message_for_strategy
   end
 end

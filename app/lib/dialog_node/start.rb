@@ -14,6 +14,6 @@ class DialogNode::Start < DialogNode
   end
 
   def message
-    ""
+    message_for_strategy
   end
 end

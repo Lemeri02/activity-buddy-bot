@@ -7,6 +7,6 @@ class DialogNode::Welcome < DialogNode
   WAIT_FOR_USER = false
 
   def message
-    "Hi #{@context.user.firstname}"
+    message_for_strategy
   end
 end

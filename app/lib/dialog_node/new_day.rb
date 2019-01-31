@@ -9,6 +9,6 @@ class DialogNode::NewDay < DialogNode
   end
 
   def message
-    "Hi #{@context.user.firstname}"
+    message_for_strategy
   end
 end

@@ -1,4 +1,5 @@
 class DialogNode
+  include MessageBlocks
 
   # Define default values
   INPUT_CONTEXT   = []

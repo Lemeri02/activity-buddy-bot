@@ -16,6 +16,6 @@ class DialogNode::ActivityTodayYes < DialogNode
 
   def message
     @context.goal_achievement = 1
-    "Very nice! You achieved something today!"
+    message_for_strategy
   end
 end

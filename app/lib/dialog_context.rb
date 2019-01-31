@@ -14,7 +14,7 @@ class DialogContext
   def reset!
     @current_node     = DialogNode.get_node(:start).new(self)
     @conversation     = Conversation.create(user: @user, start: DateTime.now)
-    @strategy         = :default
+    @strategy         = :disciplined
     @goal_achievement = 0
   end
 

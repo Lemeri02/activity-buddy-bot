@@ -8,6 +8,6 @@ class DialogNode::End < DialogNode
   PRIORITY = -1
 
   def message
-    ""
+    message_for_strategy
   end
 end
