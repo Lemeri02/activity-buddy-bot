@@ -27,6 +27,10 @@ module MessageBlocks
     }
   }
 
+  def available_strategies
+    MESSAGES.keys - [:fallback]
+  end
+
   def message_for_strategy(strategy = nil, node = nil)
     strategy ||= @context.strategy
     node ||= self.to_sym
