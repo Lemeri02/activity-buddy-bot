@@ -5,6 +5,18 @@ module EngagementAnalysis
 
     class << self
 
+      def strategy_for_user(user_id, available_strategies)
+        last_strategy = last_strategy_for_user(user_id)
+        return last_strategy unless change_strategy_for_user?(user_id)
+        (available_strategies - [last_strategy]).sample
+      end
+
+      def analyze!(*args)
+        EngagementAnalysis::AnalysisChain.run(*args)
+      end
+
+      private
+
       def engagement_for_user(user_id)
         engagement_per_conversation = Engagement.with_user(user_id).to_a.group_by(&:conversation_id)
 
@@ -47,6 +59,8 @@ module EngagementAnalysis
         end
         changes
       end
+
+
 
       def change_strategy_for_user?(user_id)
         changes = engagement_changes_per_conversation_for_user(user_id).to_a.last(MIN_CONVERSATIONS_PER_STRATEGY).collect(&:second)

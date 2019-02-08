@@ -14,8 +14,7 @@ class DialogContext
   def reset!
     @current_node     = DialogNode.get_node(:start).new(self)
     @conversation     = Conversation.create(user: @user, start: DateTime.now)
-    last_strategy     = EngagementAnalysis::UserEngagement.last_strategy_for_user(@user.id)
-    @strategy         = EngagementAnalysis::UserEngagement.change_strategy_for_user?(@user.id) ? (@current_node.available_strategies - [last_strategy]).sample : last_strategy
+    @strategy         = EngagementAnalysis::UserEngagement.strategy_for_user(@user.id, @current_node.available_strategies)
     @goal_achievement = 0
   end
 
@@ -29,7 +28,7 @@ class DialogContext
   end
 
   def send_to_engagement_analysis
-    pp EngagementAnalysis::AnalysisChain.run(
+    pp EngagementAnalysis::UserEngagement.analyze!(
       {
         user_id: @user.id,
         message_id: @message.id,
