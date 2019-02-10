@@ -9,7 +9,8 @@ class DialogNode
 
 
   ALL_NODES = [
-      :start, :end, :welcome, :ask_activity_today, :activity_today_yes, :activity_today_no
+      :start, :end, :welcome, :joke, :ask_activity_today, :activity_today_yes, :activity_today_no, :activity_today_kind,
+      :activity_today_kind_response, :activity_today_yes_with_kind
     ].map{ |t| [t, "DialogNode/#{t}".camelize.constantize] }.to_h
 
 
@@ -34,7 +35,7 @@ class DialogNode
 
     def context_match?(context, allow_empty = true)
       return false if !allow_empty && self::INPUT_CONTEXT.empty?
-      self::INPUT_CONTEXT.empty? || (self::INPUT_CONTEXT && context.current_node.output_context)
+      self::INPUT_CONTEXT.empty? || (self::INPUT_CONTEXT && context.current_node.output_context).any?
     end
 
     def intents_match?(context, allow_empty = true)
@@ -56,6 +57,7 @@ class DialogNode
   end
 
   def priority
+
     return @priority if defined? @priority
     @priority = self.class::PRIORITY
     @priority += 10 if intents_match?(false)
@@ -81,7 +83,7 @@ class DialogNode
   end
 
   def output_context
-    self.class::OUTPUT_CONTEXT
+    self.class::OUTPUT_CONTEXT + @context.dynamic_output_context
   end
 
   def intents

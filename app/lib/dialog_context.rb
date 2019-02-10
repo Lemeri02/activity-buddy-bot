@@ -1,7 +1,8 @@
 class DialogContext
 
   attr_accessor :user, :user_intents, :new_day, :current_node, :goal_achievement,
-                :last_message, :buffered_nodes, :wit_response, :strategy
+                :last_message, :buffered_nodes, :wit_response, :strategy,
+                :dynamic_output_context
 
   # ActiveRecord Model instances
   attr_accessor :conversation, :message
@@ -16,6 +17,7 @@ class DialogContext
     @conversation     = Conversation.create(user: @user, start: DateTime.now)
     @strategy         = EngagementAnalysis::UserEngagement.strategy_for_user(@user.id, @current_node.available_strategies)
     @goal_achievement = 0
+    @dynamic_output_context = []
   end
 
   def timed_out?
@@ -51,5 +53,13 @@ class DialogContext
 
   def no?
     @wit_response.intent_with_value?(:yes_no, 'no', 0.6)
+  end
+
+  def has_intent?(intent)
+    @wit_response.valid_intents.include? intent
+  end
+
+  def intent_has_value?(intent)
+    @wit_response.intent_has_value?(intent)
   end
 end

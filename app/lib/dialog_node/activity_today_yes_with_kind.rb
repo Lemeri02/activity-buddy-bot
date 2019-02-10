@@ -1,7 +1,9 @@
-class DialogNode::ActivityTodayYes < DialogNode
+class DialogNode::ActivityTodayYesWithKind < DialogNode
 
   INPUT_CONTEXT = [:confirm_activity_today]
-  OUTPUT_CONTEXT = [:ask_activity_type]
+  OUTPUT_CONTEXT = [:response_activity_type]
+
+  INTENTS = [:activity]
   
   WAIT_FOR_USER = false
 
@@ -10,8 +12,7 @@ class DialogNode::ActivityTodayYes < DialogNode
 
   def self.applicable?(context)
     return false unless super
-    return false unless context.yes?
-    return false if context.has_intent? :activity
+    # return false unless context.yes?
     true
   end
 

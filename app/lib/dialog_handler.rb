@@ -44,12 +44,14 @@ class DialogHandler
     @context.buffered_nodes << @context.current_node.to_sym
     # Select intent
     # TODO: Sophisticated algorithm to select out of multiple next nodes
+    Rails.logger.debug("Output Context: #{@context.current_node.output_context}")
     Rails.logger.debug("Applicable nodes: #{applicable_nodes}")
     Rails.logger.debug("Buffered nodes: #{@context.buffered_nodes}")
     possible_nodes = (applicable_nodes - @context.buffered_nodes)
     Rails.logger.debug("Possible next nodes: #{possible_nodes}")
     next_node = possible_nodes.map{ |n| DialogNode.get_node(n).new(@context) }.max_by(&:priority)
     @context.current_node = next_node
+    @context.dynamic_output_context = []
     Rails.logger.debug("==> Switch to node <#{next_node}>")
   end
 

@@ -55,7 +55,7 @@ module EngagementAnalysis
         changes = {}
         engagement_per_conversation[1..-1].each_with_index do |(k, v), i|
           prev = engagement_per_conversation[i].second.to_f
-          changes[k] = (((v - prev).to_f / prev.abs) * 100.0).round
+          changes[k] = (((v - prev).to_f / [1.0, prev.abs].max) * 100.0).round
         end
         changes
       end
