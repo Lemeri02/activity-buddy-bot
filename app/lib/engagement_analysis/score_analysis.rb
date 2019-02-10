@@ -14,8 +14,10 @@ module EngagementAnalysis
       score = 0
 
       # TODO: This is VERY basic. Needs to be more sophisticated!
-      score += metrics[:message][:length]
+      score += metrics[:message][:length] * MESSAGE_LENGTH
       score += metrics[:message][:sentiment] * SENTIMENT_WEIGHT
+      score += metrics[:activity][:first_today] * ACTIVE_DAY
+      score += metrics[:activity][:new_conversation] * NEW_CONVERSATION
       score += metrics[:goal] * GOAL_ACHIEVEMENT_WEIGHT
 
       score

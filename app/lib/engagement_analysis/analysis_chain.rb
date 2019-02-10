@@ -3,7 +3,6 @@ module EngagementAnalysis
     class << self
 
       def run(*args)
-        initialized_handlers[0...-1].each_with_index { |handler, i| handler.successor = initialized_handlers[i + 1] }
         initialized_handlers.first.call(*args)
       end
 
@@ -13,6 +12,7 @@ module EngagementAnalysis
         [
           EngagementAnalysis::InitAnalysis,
           EngagementAnalysis::MessageAnalysis,
+          EngagementAnalysis::ActivityAnalysis,
           EngagementAnalysis::GoalAnalysis,
           EngagementAnalysis::ScoreAnalysis,
           EngagementAnalysis::SaveAnalysis
@@ -21,7 +21,10 @@ module EngagementAnalysis
 
 
       def initialized_handlers
-        @initialized_handlers ||= handlers.map(&:new)
+        return @initialized_handlers if defined? @initialized_handlers
+        @initialized_handlers = handlers.map(&:new)
+        @initialized_handlers[0...-1].each_with_index { |handler, i| handler.successor = @initialized_handlers[i + 1] }
+        @initialized_handlers
       end
     end
   end

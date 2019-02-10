@@ -3,6 +3,9 @@ module EngagementAnalysis
     attr_accessor :successor
 
     # Constants for weighting different aspects of User Engagement Score
+    MESSAGE_LENGTH          = 1
+    ACTIVE_DAY              = 5
+    NEW_CONVERSATION       = 5
     SENTIMENT_WEIGHT        = 10
     GOAL_ACHIEVEMENT_WEIGHT = 20
 
