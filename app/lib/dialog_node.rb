@@ -10,7 +10,7 @@ class DialogNode
 
   ALL_NODES = [
       :start, :end, :welcome, :joke, :ask_activity_today, :activity_today_yes, :activity_today_no, :activity_today_kind,
-      :activity_today_kind_response, :activity_today_yes_with_kind
+      :activity_today_kind_response, :activity_today_yes_with_kind, :give_feedback
     ].map{ |t| [t, "DialogNode/#{t}".camelize.constantize] }.to_h
 
 

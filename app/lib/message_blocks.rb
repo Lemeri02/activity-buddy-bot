@@ -11,6 +11,8 @@ module MessageBlocks
       activity_today_kind:          ["Great! What did you do?"],
       activity_today_kind_response: ["<%= @context.wit_response.intent_value(:activity) %> sounds great!"],
       joke:                         ["[Telling a joke]"],
+      feedback:                     ["<%= @feedback_positive ? 'You are doing good. You reported ' + @no_activities + ' activities for the last week.'
+                                     : 'Hmm, your activity level could be better. You reported ' + @no_activities + ' activities in the last week.'"],
       end:                          ['']
     },
     supportive: {
@@ -19,7 +21,7 @@ module MessageBlocks
       #start:               :fallback
       joke:                 ["What do you call a free treadmill? \n Outside"],
       ask_activity_today:   ["I hope you have good news for me. Did you already do some activity?"],
-      activity_today_no:    ["Well, I'm sure you have a busy schedule, but you should do a bit more.", "Too bad! Regular excercise is really important for your health."],
+      activity_today_no:    ["Well, I'm sure you have a busy schedule, but you should do a bit more.", "Too bad! Regular exercise is really important for your health."],
       activity_today_yes:   ["Nice! I like to hear that, you are great!"]
     },
     disciplined: {
