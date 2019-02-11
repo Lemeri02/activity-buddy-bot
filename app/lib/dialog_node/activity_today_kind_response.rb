@@ -13,6 +13,14 @@ class DialogNode::ActivityTodayKindResponse < DialogNode
   end
 
   def message
+    # Get date of reported activity, set to today if no datetime entity
+    date_entity = @context.wit_response.intent_value(:datetime)
+    date = date_entity ? Date.parse(date_entity) : Date.today
+
+    # Create activity
+    Activity.create(user: @context.user, date: date, activity_type: @context.wit_response.intent_value(:activity))
+
+    # Return message
     message_for_strategy
   end
 end
