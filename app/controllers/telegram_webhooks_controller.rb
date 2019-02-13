@@ -2,15 +2,11 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   include Telegram::Bot::UpdatesController::Session
 
   def start!(*)
-    respond_with :message, text: t('.hi')
+    respond_with :message, text: "Hi! I'm ActivityBuddy. I will help you being more active and stay in shape!"
   end
 
   def message(message)
-    # Receive message
-
-    # Handle message
-
-    # Determine context/answer
+    # Handover to DialogHandler
     answer = dialog_handler.handle_message(message)
 
     # Return response

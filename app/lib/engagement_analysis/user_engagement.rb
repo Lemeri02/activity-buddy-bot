@@ -7,7 +7,7 @@ module EngagementAnalysis
 
       def strategy_for_user(user_id, available_strategies)
         last_strategy = last_strategy_for_user(user_id)
-        return last_strategy unless change_strategy_for_user?(user_id)
+        return last_strategy unless last_strategy.nil? || change_strategy_for_user?(user_id)
         (available_strategies - [last_strategy]).sample
       end
 
@@ -59,8 +59,6 @@ module EngagementAnalysis
         end
         changes
       end
-
-
 
       def change_strategy_for_user?(user_id)
         changes = engagement_changes_per_conversation_for_user(user_id).to_a.last(MIN_CONVERSATIONS_PER_STRATEGY).collect(&:second)

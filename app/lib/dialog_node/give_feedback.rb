@@ -5,7 +5,7 @@ class DialogNode::GiveFeedback < DialogNode
 
   INTENTS = [:feedback]
 
-  WAIT_FOR_USER = true
+  WAIT_FOR_USER = false
 
 
   def message

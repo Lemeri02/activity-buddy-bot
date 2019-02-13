@@ -61,7 +61,7 @@ class DialogNode
     return @priority if defined? @priority
     @priority = self.class::PRIORITY
     @priority += 10 if intents_match?(false)
-    @priority += 10 if context_match?(false)
+    @priority += 20 if context_match?(false)
     Rails.logger.debug("Piority #{self.class}: #{@priority}")
     @priority
   end

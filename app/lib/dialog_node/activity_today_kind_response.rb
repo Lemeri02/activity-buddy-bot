@@ -4,6 +4,8 @@ class DialogNode::ActivityTodayKindResponse < DialogNode
   OUTPUT_CONTEXT = []
 
   INTENTS = [:activity]
+
+  PRIORITY = 10
   
   WAIT_FOR_USER = true
 
