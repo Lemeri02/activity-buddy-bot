@@ -1,0 +1,12 @@
+version: '3'
+services:
+  db:
+    image: postgres
+
+  web:
+    build: .
+    environment:
+      - TELEGRAM_API_KEY=[your_key_here]
+      - WIT_API_KEY=[your_key_here]
+    depends_on:
+      - db

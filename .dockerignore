@@ -1,0 +1,10 @@
+.idea
+.git
+log
+tmp
+vendor
+.byebug_history
+ActivityBuddy-*
+*.md
+config/credentials.yml.enc
+master.key

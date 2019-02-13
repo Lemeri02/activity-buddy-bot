@@ -1,6 +1,6 @@
 class WitProxy
 
-  ACCESS_TOKEN = Rails.application.credentials[Rails.env.to_sym][:wit][:token].freeze
+  ACCESS_TOKEN = ENV["WIT_API_KEY"] || Rails.application.credentials[Rails.env.to_sym][:wit][:token].freeze
 
   @client = Wit.new(access_token: ACCESS_TOKEN)
 

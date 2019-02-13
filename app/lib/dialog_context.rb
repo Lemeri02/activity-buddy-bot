@@ -16,6 +16,7 @@ class DialogContext
     @current_node     = DialogNode.get_node(:start).new(self)
     @conversation     = Conversation.create(user: @user, start: DateTime.now)
     @strategy         = EngagementAnalysis::UserEngagement.strategy_for_user(@user.id, @current_node.available_strategies)
+    pp @strategy
     @goal_achievement = 0
     @dynamic_output_context = []
   end
